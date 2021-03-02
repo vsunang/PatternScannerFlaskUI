@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <style>
+            body { font-family: Arial, Helvetica, sans-serif; margin: 20px;}
+            .技术看涨 { background:red; color:white; }
+            .技术看跌 { background: green; color:white; }
+        </style>
+    </head>
+    <body>
+        <h1>TA-lib 形态类技术指标选股器</h1>
+        <h3>说明：单纯看技术指标选股没有多大意义，本项目主要目的在于<br />
+            利用Flask提供一个可操作的图形化界面，完全自主可控，可扩展;<br />
+            自由搭配靠谱的自定义选股程序，使研究过程直观便捷得多。
+        </h3>
+        
+        <form>
+            <select name="pattern">
+                {% for pattern in patterns %}
+                <option value="{{ pattern }}" {% if pattern==curr_pattern %}selected="selected"{% endif %}>{{ patterns[pattern] }}</option>
+                {% endfor %}
+            </select>
+
+            <input type="submit" value="开始选股" />
+        </form>
+        
+        <table>
+            <tr>
+                <th>
+                    代码
+                </th>
+                <th>
+                    简称
+                </th>
+                <th>
+                    指标
+                </th>
+            </tr>
+
+        {% for stock in stocks %}
+            {% if stocks[stock][curr_pattern] %}
+            <tr>
+                <td>{{ stock }}</td>
+                <td>{{ stocks[stock]['name'] }}</td>
+                <td class="{{ stocks[stock][curr_pattern] }}">{{ stocks[stock][curr_pattern] }}</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <img src="http://image.sinajs.cn/newchart/daily/n/{{ stock }}.gif"/>
+                </td>
+            </tr>            
+            {% endif %}
+        {% endfor %}
+        </table>
+    </body>
+</html>
